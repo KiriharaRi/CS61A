@@ -159,6 +159,7 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     """
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
+    h1 = say#count 1
     while score0 < goal and score1 < goal:
         if who == 0:
             score0 += take_turn(strategy0(score0,score1), score1, dice, goal)
@@ -170,11 +171,19 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
                 who = next_player(who)
     # END PROBLEM 5
     # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
-    # BEGIN PROBLEM 6
-    "*** YOUR CODE HERE ***"
+    # BEGIN PROBLEM 
     # END PROBLEM 6
+        h1 = h1(score0,score1)
     return score0, score1
+def echo(score0,score1):
+    print(score0,score1)
+    return echo
 
+def count(n):
+    def say(s0,s1):
+        print(n,s0)
+        return count(n + 1)
+    return say
 
 #######################
 # Phase 2: Commentary #
@@ -242,8 +251,8 @@ def announce_highest(who, last_score=0, running_high=0):
     an example for the sake of the doctest
 
     >>> f0 = announce_highest(1) # Only announce Player 1 score gains
-    >>> f1 = f0(12, 0)
-    >>> f2 = f1(12, 9)
+    >>> f1 = f0(12, 0) 
+    >>> f2 = f1(12, 9) 
     Player 1 has reached a new maximum point gain. 9 point(s)!
     >>> f3 = f2(20, 9)
     >>> f4 = f3(20, 30)
@@ -255,7 +264,19 @@ def announce_highest(who, last_score=0, running_high=0):
     """
     assert who == 0 or who == 1, 'The who argument should indicate a player.'
     # BEGIN PROBLEM 7
-    "*** YOUR CODE HERE ***"
+
+    def say(score0,score1):
+        if who == 0:
+            score = score0
+        elif who == 1:
+            score = score1
+        temporary_score = running_high
+        turn_score = score - last_score
+        if turn_score != 0 and turn_score > temporary_score:
+            temporary_score = turn_score
+            print('Player', who, 'has reached a new maximum point gain.', temporary_score, 'point(s)!')
+        return announce_highest(who,score,temporary_score)
+    return say
     # END PROBLEM 7
 
 
