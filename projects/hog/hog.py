@@ -316,7 +316,14 @@ def make_averaged(original_function, trials_count=1000):
     3.0
     """
     # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
+    def averaged_dice(*args):
+        sum = 0
+        i = 0
+        while i < trials_count:
+            sum += original_function(*args)
+            i += 1
+        return sum/trials_count
+    return averaged_dice
     # END PROBLEM 8
 
 
@@ -330,7 +337,17 @@ def max_scoring_num_rolls(dice=six_sided, trials_count=1000):
     1
     """
     # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
+    max = 1
+    turn_grade = make_averaged(roll_dice)
+    max_averaged = turn_grade(1,dice)
+    i = 1
+    while i <= 10:
+        data = turn_grade(i,dice)
+        if data > max_averaged:
+            max_averaged = data
+            max = i
+        i += 1
+    return max
     # END PROBLEM 9
 
 
@@ -371,7 +388,10 @@ def piggypoints_strategy(score, opponent_score, cutoff=8, num_rolls=6):
     rolls NUM_ROLLS otherwise.
     """
     # BEGIN PROBLEM 10
-    return 6  # Replace this statement
+    if piggy_points(opponent_score) >= cutoff:
+        return 0
+    else:
+        return num_rolls
     # END PROBLEM 10
 
 
@@ -381,7 +401,14 @@ def more_boar_strategy(score, opponent_score, cutoff=8, num_rolls=6):
     Otherwise, it rolls NUM_ROLLS.
     """
     # BEGIN PROBLEM 11
-    return 6  # Replace this statement
+    piggy = piggy_points(opponent_score)
+    boar_score = score + piggy
+    if more_boar(boar_score,opponent_score):
+        return 0
+    elif piggy >= cutoff:
+        return 0
+    else:
+        return num_rolls
     # END PROBLEM 11
 
 
